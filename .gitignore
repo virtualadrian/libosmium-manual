@@ -1,0 +1,5 @@
+.*.swp
+docbookhtml/*
+html/*
+out/*
+tmp/*

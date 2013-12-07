@@ -1,0 +1,1 @@
+% Osmium Library Manual

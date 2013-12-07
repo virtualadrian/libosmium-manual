@@ -1,0 +1,30 @@
+
+body {
+    position: relative;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 0;
+    font-family: "Droid Sans",Helvetica,Arial,sans-serif;
+    background-color: #fffdea;
+    color: #202040;
+}
+
+pre {
+    background-color: rgba(0,0,0,0.1);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.2);
+    font-size: 90%;
+}
+
+div.informaltable table {
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 4px;
+}
+
+div.informaltable table td {
+    vertical-align: top;
+    padding-left: 2px;
+    padding-right: 8px;
+}
+

@@ -1,12 +1,12 @@
 
 # Osmium Library Manual
 
-http://osmcode.org/libosium/
+http://osmcode.org/libosmium-manual/
 
-This is the manual for the Osmium library. It contains a more high level
-overview and tutorial style documentation. For the details you should also look
-at the API documentation generated automatically from the source code with
-Doxygen.
+This is the manual for the [Osmium Library](http://osmcode.org/libosmium/). It
+contains a more high level overview and tutorial style documentation. For the
+details you should also look at the API documentation generated automatically
+from the source code with Doxygen.
 
 The manual is written using an extended version of the Markdown syntax as
 understood by the Pandoc tool. It can be converted into HTML, PDF, Docbook and

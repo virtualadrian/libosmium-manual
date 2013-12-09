@@ -130,21 +130,21 @@ Include: `<osmium/osm/undirected_segment.hpp>`
 Undirected Segments are connection between two locations. They
 are not OSM objects but sometimes useful in algorithms.
 
-## Bounding Boxes
+## Boxes
 
-Class: `osmium::BBox`
+Class: `osmium::Box`
 
-Include: `<osmium/osm/bbox.hpp>`
+Include: `<osmium/osm/box.hpp>`
 
-A bounding box is a rectangular box described by the minimum and
-maximum longitude and latitude. It is used, for instance, in the
-header of OSM files and in changesets.
+A box is a rectangle described by the minimum and maximum longitude and
+latitude. It is used, for instance, in the header of OSM files and in
+changesets to describe the bounding box.
 
 ~~~ {.cpp}
-osmium::BBox bbox;
-bbox.extend(osmium::Location(3.2, 4.3));
-bbox.extend({4.5, 7.2});
-bbox.extend({3.3, 8.9});
-std::cout << bbox;  // (3.2,4.3,4.5,8.9)
+osmium::Box box;
+box.extend(osmium::Location(3.2, 4.3));
+box.extend({4.5, 7.2});
+box.extend({3.3, 8.9});
+std::cout << box;  // (3.2,4.3,4.5,8.9)
 ~~~
 

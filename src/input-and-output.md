@@ -24,8 +24,7 @@ Osmium supports the following formats:
     format is intended for easy use with standard UNIX command line tools such
     as `grep`, `cut`, and `awk`.
 
-OSM files come in many variants, some of which are supported by Osmium.
-XXX more details
+See [Output Formats] for more details about these formats.
 
 ## Compression
 
@@ -72,22 +71,44 @@ Or, if you want both anyway, you can just use the shortcut:
 
     #include <osmmium/io/any_compression.hpp>
 
-# Libraries
+## Output Formats
 
-If need to link with the following libraries depending on which formats you
-are using:
+### XML
 
+There are several different XML formats in use in the OSM project. The main
+formats are the one used for planet files, extracts, and API responses (suffix
+`.osm`), the format used for change files (suffix `.osc`) and the history
+format (suffixes `.osm` or `.osh`).
 
-## PBF Support
+Some variants are also used, such as the JOSM format which is similiar to the
+normal OSM format but has some additions. Support for the features of these
+formats varies.
 
-The [PBF](http://wiki.openstreetmap.org/wiki/PBF_Format)
-file support is based on the [Google Protocol Buffers library](http://code.google.com/p/protobuf/). Several libraries are needed: libprotobuf-lite contains
-the Protocol Buffers library itself which also needs libpthreads, for compression libz
-is needed. Those are all standard libraries that should be available on most systems.
-The OSM PBF format is defined in
-[libosmpbf](https://github.com/scrosby/OSM-binary),
+When reading, the OSM change format (`.osc`) is detected automatically. When
+writing, you have to set it using the format specifier `osc` or the format
+parameter `xml_change_format=true`.
+
+For read support you need the expat parser library. Link with:
+
+    -lexpat
+
+For write support no special library is needed.
+
+### PBF
+
+The [PBF](http://wiki.openstreetmap.org/wiki/PBF_Format) file format is based
+on the [Google Protocol Buffers library](http://code.google.com/p/protobuf/).
+PBF files are very space efficient and faster to use than XML files. PBF files
+can contain normal OSM data or OSM history data, but there is no equivalent to
+the XML .osc format.
+
+The OSM PBF format is defined in [libosmpbf](https://github.com/scrosby/OSM-binary),
 you'll probably have to compile and install this yourself before using it in
 Osmium.
+
+To build with PBF support, several libraries are needed: libprotobuf-lite contains
+the Protocol Buffers library itself which also needs libpthreads, for compression libz
+is needed. Those are all standard libraries that should be available on most systems.
 
 To summarize, you need to link with:
 
@@ -103,14 +124,20 @@ You do not have to do this, the function is not necessary for the
 correct functioning of your program. But if you are using a memory
 checker like Valgrind you will get error messages otherwise.
 
-## XML Support
+Osmium supports reading and writing of nodes in *DenseNodes* and non-*DenseNodes*
+formats. Default is *DenseNodes*, as this is much more space-efficient. Add the
+format parameter `pbf_dense_nodes=false` to disable *DenseNodes*.
 
-For read support you need the expat parser library. Link with:
-    -lexpat
+Osmium usually will compress PBF blocks using zlib. To disable this, use the
+format parameter `pbf_compression=none`.
 
-For write support no special library is needed.
+Usually PBF files contain all the metadata for objects such as changeset id,
+username, etc. To save some space you can disable writing of metatdata with the
+format parameter `pbf_add_metadata=false`.
 
-## OPL Support
+### OPL Support
+
+
 
 ## Reading and Writing OSM Files with Osmium
 

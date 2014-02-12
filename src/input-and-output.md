@@ -39,11 +39,11 @@ Whenever you want to use Osmium to access OSM files you need to include the
 right header files and link your program to the right libraries. If you want
 to support all the different formats you add
 
-    #include <osmmium/io/any_input.hpp>
+    #include <osmium/io/any_input.hpp>
 
 and/or
 
-    #include <osmmium/io/any_output.hpp>
+    #include <osmium/io/any_output.hpp>
 
 to your C++ files. These headers will pull in all the file formats and all
 the compression types for input and output, respectively. Usually this is
@@ -54,22 +54,22 @@ and choose formats and compression types.
 If you only need some file formats, you can include any combinations of the
 following headers:
 
-    #include <osmmium/io/pbf_input.hpp>
-    #include <osmmium/io/xml_input.hpp>
+    #include <osmium/io/pbf_input.hpp>
+    #include <osmium/io/xml_input.hpp>
 
-    #include <osmmium/io/pbf_output.hpp>
-    #include <osmmium/io/opl_output.hpp>
-    #include <osmmium/io/xml_output.hpp>
+    #include <osmium/io/pbf_output.hpp>
+    #include <osmium/io/opl_output.hpp>
+    #include <osmium/io/xml_output.hpp>
 
 If you want compression support, you have to add the includes for the different
 compression algorithms:
 
-    #include <osmmium/io/gzip_compression.hpp>
-    #include <osmmium/io/bzip2_compression.hpp>
+    #include <osmium/io/gzip_compression.hpp>
+    #include <osmium/io/bzip2_compression.hpp>
 
 Or, if you want both anyway, you can just use the shortcut:
 
-    #include <osmmium/io/any_compression.hpp>
+    #include <osmium/io/any_compression.hpp>
 
 ## Output Formats
 

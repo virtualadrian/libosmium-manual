@@ -33,7 +33,7 @@ for (; it != end; ++it) {
 Of course you can also use the C++11 `for` loop:
 
 ~~~{.cpp}
-for (auto item : buffer) {
+for (auto& item : buffer) {
     ...
 }
 ~~~

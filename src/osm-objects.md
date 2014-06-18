@@ -34,11 +34,11 @@ or change files it shows whether an object version has been deleted.
 
 In addition each object has a list of tags attached:
 
-    osmium::TagList& tags = obj.tags();
+    const osmium::TagList& tags = obj.tags();
 
 You can iterate over all tags:
 
-    for (osmium::Tag& tag : obj.tags()) {
+    for (const osmium::Tag& tag : obj.tags()) {
         std::cout << tag.key() << "=" << tag.value() << "\n";
     }
 

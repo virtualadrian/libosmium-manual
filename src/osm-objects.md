@@ -1,22 +1,24 @@
 # OSM Entities
 
 Osmium works with the four basic types of OSM entities: Nodes, Ways, and
-Relations (which are all [Objects]) and Changesets.
+Relations (which are all [OSM Objects]) and Changesets. In addition Areas
+are supported, which are not native OSM objects, but they are almost treated
+like real OSM objects.
 
 These OSM entities can not be created like any normal C++ object, but they
 need a buffer to live in. See the next chapter for details. Accessing existing
 OSM entities on the other hand is easy and straightforward.
 
-## Objects
+## OSM Objects
 
-Class: `osmium::Object`
+Class: `osmium::OSMObject`
 
 Include: `<osmium/osm/object.hpp>`
 
-The `osmium::Object` class is the base class for nodes, ways, and relations.
+The `osmium::OSMObject` class is the base class for nodes, ways, and relations.
 it has accessors for the usual OSM attributes:
 
-    osmium::Object& obj = ...
+    osmium::OSMObject& obj = ...
     std::cout << "id=" << obj.id()
               << " version=" << obj.version()
               << " timestamp=" << obj.timestamp()
@@ -56,8 +58,8 @@ Class: `osmium::Node`
 
 Include: `<osmium/osm/node.hpp>`
 
-A `Node` is a kind of `Object`. In addition to the things you can do with any
-Object, the Node has a Location.
+A `Node` is a kind of `OSMObject`. In addition to the things you can do with any
+OSMObject, the Node has a Location.
 
     osmium::Node& node = ...
     double longitude = node.location().lon();
@@ -68,12 +70,12 @@ Classes: `osmium::Way`, `osmium::WayNode`, `osmium::WayNodeList`
 
 Include: `<osmium/osm/way.hpp>`
 
-A `Way` is a kind of `Object`. In addition to the things you can do with any
-Object, a Way has a list of way nodes:
+A `Way` is a kind of `OSMObject`. In addition to the things you can do with any
+OSMObject, a Way has a list of node references:
 
     osmium::Way& way = ...
-    for (osmium::WayNode& wn : way.nodes()) {
-        std::cout << "ref=" << wn.ref() << " location=" << wn.location() << "\n";
+    for (const osmium::NodeRef& nr : way.nodes()) {
+        std::cout << "ref=" << nr.ref() << " location=" << nr.location() << "\n";
     }
 
 ## Relations
@@ -82,8 +84,8 @@ Classes: `osmium::Relation`, `osmium::RelationMember`, `osmium::RelationMemberLi
 
 Include: `<osmium/osm/relation.hpp>`
 
-A `Relation` is a kind of `Object`. In addition to the things you can do with any
-Object, a Relation has a list of members:
+A `Relation` is a kind of `OSMObject`. In addition to the things you can do with any
+OSMObject, a Relation has a list of members:
 
     osmium::Relation& relation = ...
     osmium::RelationMemberList& rml = way.members();
@@ -93,7 +95,7 @@ Object, a Relation has a list of members:
 
 ## Areas
 
-*not yet implemented*
+*not yet documented*
 
 ## Changesets
 

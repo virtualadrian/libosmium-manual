@@ -391,19 +391,19 @@ about it, it might be able to read the file more efficiently by skipping those
 parts you are not interested in:
 
 ~~~{.cpp}
-osmium::io::Reader reader("input.osm.pbf", osmium::osm_entity::flags::way);
+osmium::io::Reader reader("input.osm.pbf", osmium::osm_entity_bits::way);
 ~~~
 
 You can set the following flags:
 
-Flag                                   Description
------                                  -------------
-`osmium::osm_entity::flags::nothing`   Do not ready any entities at all (useful if you are only interested in the file header)
-`osmium::osm_entity::flags::node`      Read nodes
-`osmium::osm_entity::flags::way`       Read ways
-`osmium::osm_entity::flags::relation`  Read relations
-`osmium::osm_entity::flags::changeset` Read changesets
-`osmium::osm_entity::flags::all`       Read all of the above
+Flag                                 Description
+-----                                -------------
+`osmium::osm_entity_bits::nothing`   Do not ready any entities at all (useful if you are only interested in the file header)
+`osmium::osm_entity_bits::node`      Read nodes
+`osmium::osm_entity_bits::way`       Read ways
+`osmium::osm_entity_bits::relation`  Read relations
+`osmium::osm_entity_bits::changeset` Read changesets
+`osmium::osm_entity_bits::all`       Read all of the above
 
 You can also "or" several flags together if needed.
 

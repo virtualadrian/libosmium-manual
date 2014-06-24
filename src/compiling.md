@@ -23,9 +23,8 @@ Linux
 :   Osmium is developed on Linux and tested best on that system.
     Debian Jessie (testing) and current Ubuntu systems come with
     everything needed for Osmium. Debian wheezy (stable) and the
-    last Ubuntu LTS release 12.04 don't have compilers current
-    enough. If you are stuck on these systems, use a backported
-    compiler.
+    Ubuntu LTS release 12.04 don't have compilers current enough.
+    If you are stuck on these systems, use a backported compiler.
 
 Mac OSX    
 
@@ -84,7 +83,12 @@ libraries. Libraries used are:
 * [Iterator](http://www.boost.org/libs/iterator/doc/)
 * [String Algorithms](http://www.boost.org/doc/libs/1_55_0/libs/algorithm/string/)
 
+Osmium also needs some Boost unicode functions. Because they are rather new and
+not available everywhere, they are currently included with Osmium in
+`include/boost_unicode_iterator.hpp`.
+
 The Osmium unit tests use the [Boost Test library](http://www.boost.org/libs/test/).
+
 
 ## OGR Support
 

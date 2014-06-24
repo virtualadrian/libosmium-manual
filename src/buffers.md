@@ -56,8 +56,8 @@ it should automatically grow the buffer if it is needed:
 
 ~~~{.cpp}
 const int buffer_size = 10240;
-osmium::memory::Buffer buffer(buffer_size, true); // auto-grow
-osmium::memory::Buffer buffer(buffer_size, false); // do not grow automatically
+osmium::memory::Buffer buffer(buffer_size, osmium::memory::Buffer::auto_grow::yes);
+osmium::memory::Buffer buffer(buffer_size, osmium::memory::Buffer::auto_grow::no);
 ~~~
 
 ## Adding Items to the Buffer
@@ -66,13 +66,13 @@ osmium::memory::Buffer buffer(buffer_size, false); // do not grow automatically
 
 If a buffer becomes full, there are three different things that can happen:
 
-If the buffer was created with `auto_grow=true`, it will reserve more memory
+If the buffer was created with `auto_grow::yes`, it will reserve more memory
 on the heap and double its size. This will happen without the client code
 noticing, but it will invalidate any pointer pointing into the buffer. This
 is the same behaviour a `std::vector` has so it should be familiar to C++
 programmers.
 
-If the buffer was created with `auto_grow=false` (or if it is a buffer with
+If the buffer was created with `auto_grow::no` (or if it is a buffer with
 external memory management), the exception `osmium::memory::BufferIsFull` will
 be thrown. In this case you have to catch the exception, either grow the buffer
 or create a new one. If you grow the buffer you can keep going at the point

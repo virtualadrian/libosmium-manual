@@ -112,6 +112,9 @@ location.valid()
 
 to find out if a location is inside those bounds.
 
+The `lon()` and `lat()` getter calls will throw an exception if the location is
+invalid or undefined.
+
 ## Segments
 
 Class: `osmium::Segment`

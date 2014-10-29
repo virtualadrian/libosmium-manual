@@ -13,7 +13,8 @@ MD_FILES := \
     src/input-and-output.md	\
     src/iterators.md \
     src/visitors-and-handlers.md \
-    src/storage.md
+    src/storage.md \
+    src/exceptions.md
 
 HTML_FILES := $(patsubst src/%.md,html/%.html,$(MD_FILES))
 

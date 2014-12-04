@@ -14,7 +14,8 @@ MD_FILES := \
     src/iterators.md \
     src/visitors-and-handlers.md \
     src/storage.md \
-    src/exceptions.md
+    src/exceptions.md \
+    src/config.md
 
 HTML_FILES := $(patsubst src/%.md,html/%.html,$(MD_FILES))
 

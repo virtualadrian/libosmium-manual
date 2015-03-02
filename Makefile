@@ -62,7 +62,7 @@ tmp/libosmium-manual.xml: tmp/libosmium-manual.md
 # Single HTML file
 out/libosmium-manual.html: tmp/libosmium-manual.md
 	mkdir -p out
-	$(PANDOC) --number-sections --standalone --toc --css=manual.css -o $@ $<
+	$(PANDOC) --template=templates/default --number-sections --standalone --toc --css=manual.css -o $@ $<
 
 # Chunked HTML via Docbook
 docbookhtml/index.html: tmp/libosmium-manual.xml
@@ -76,7 +76,7 @@ docbookhtml/manual.css: docbookhtml.css
 # Multiple HTML files
 html/%.html: src/%.md
 	mkdir -p html
-	$(PANDOC) --standalone --css=manual.css -o $@ $<
+	$(PANDOC) --template=templates/default --standalone --css=manual.css -o $@ $<
 
 html/manual.css: manual.css
 	mkdir -p html

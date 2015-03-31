@@ -131,6 +131,10 @@ format parameter `pbf_dense_nodes=false` to disable *DenseNodes*.
 Osmium usually will compress PBF blocks using zlib. To disable this, use the
 format parameter `pbf_compression=none`.
 
+PBF files contain a string table in each data block. By default these string
+tables are sorted. Use `pbf_sort_stringtables=false` to not sort them. This
+will slightly speed up the writing of PBF files.
+
 Usually PBF files contain all the metadata for objects such as changeset id,
 username, etc. To save some space you can disable writing of metatdata with the
 format parameter `pbf_add_metadata=false`.

@@ -1,23 +1,36 @@
 #
-#  Makefile for Osmium manual.
+#  Makefile for Osmium manuals.
 #
 
 PANDOC := pandoc
 
-MD_FILES := \
-    src/introduction.md \
-    src/compiling.md \
-    src/basic-types.md \
-    src/osm-objects.md \
-    src/buffers.md \
-    src/input-and-output.md	\
-    src/iterators.md \
-    src/visitors-and-handlers.md \
-    src/storage.md \
-    src/exceptions.md \
-    src/config.md
+LIBOSMIUM_MD_FILES := \
+    src/libosmium/introduction.md \
+    src/libosmium/compiling.md \
+    src/libosmium/basic-types.md \
+    src/libosmium/osm-objects.md \
+    src/libosmium/buffers.md \
+    src/libosmium/input-and-output.md \
+    src/libosmium/iterators.md \
+    src/libosmium/visitors-and-handlers.md \
+    src/libosmium/storage.md \
+    src/libosmium/exceptions.md \
+    src/libosmium/config.md
 
-HTML_FILES := $(patsubst src/%.md,html/%.html,$(MD_FILES))
+OPL_MD_FILES := \
+    src/opl-file-format/introduction.md \
+    src/opl-file-format/escaping.md \
+    src/opl-file-format/overview.md \
+    src/opl-file-format/examples.md
+
+CONCEPTS_MD_FILES := \
+    src/osmium-concepts/introduction.md \
+    src/osmium-concepts/files.md \
+    src/osmium-concepts/handlers.md \
+    src/osmium-concepts/entities.md \
+    src/osmium-concepts/indexes.md
+
+HTML_FILES := $(patsubst src/%.md,html/%.html,$(CONCEPTS_MD_FILES) $(LIBOSMIUM_MD_FILES) $(OPL_MD_FILES))
 
 all: html singlehtml
 
@@ -25,67 +38,75 @@ all: html singlehtml
 
 .PHONY: docbook docbookhtml epub html singlehtml pdf
 
-docbook: tmp/libosmium-manual.xml
+docbook: tmp/libosmium-manual.xml tmp/opl-file-format-manual.xml tmp/osmium-concepts-manual.xml
 
-docbookhtml: docbookhtml/index.html docbookhtml/manual.css
+docbookhtml: docbookhtml/libosmium/index.html docbookhtml/opl-file-format/index.html docbookhtml/osmium-concepts/index.html docbookhtml/libosmium/manual.css docbookhtml/opl-file-format/manual.css docbookhtml/osmium-concepts/manual.css
 
-epub: out/libosmium-manual.epub
+html: $(HTML_FILES) html/libosmium/manual.css html/opl-file-format/manual.css html/osmium-concepts/manual.css
 
-html: $(HTML_FILES) html/manual.css
+epub: out/libosmium-manual.epub out/opl-file-format-manual.epub out/osmium-concepts-manual.epub
 
-singlehtml: out/libosmium-manual.html out/manual.css
+singlehtml: out/libosmium-manual.html out/opl-file-format-manual.html out/osmium-concepts-manual.html out/manual.css
 
-pdf: out/libosmium-manual.pdf
+pdf: out/libosmium-manual.pdf out/opl-file-format-manual.pdf out/osmium-concepts-manual.pdf
 
 # -----------------------------------------------------
 
 # Concatenation of all markdown files
-tmp/libosmium-manual.md: header.md $(MD_FILES)
+tmp/libosmium-manual.md: src/libosmium/header.md $(LIBOSMIUM_MD_FILES)
 	mkdir -p tmp
-	cat header.md $(MD_FILES) >$@
+	cat $^ >$@
+
+tmp/opl-file-format-manual.md: src/opl-file-format/header.md $(OPL_MD_FILES)
+	mkdir -p tmp
+	cat $^ >$@
+
+tmp/osmium-concepts-manual.md: src/osmium-concepts/header.md $(CONCEPTS_MD_FILES)
+	mkdir -p tmp
+	cat $^ >$@
 
 # PDF version
-out/libosmium-manual.pdf: tmp/libosmium-manual.md
+out/%-manual.pdf: tmp/%-manual.md
 	mkdir -p out
 	$(PANDOC) --number-sections --toc --standalone -V geometry:margin=1.5cm -o $@ $<
 
 # EPUB version
-out/libosmium-manual.epub: tmp/libosmium-manual.md
+out/%-manual.epub: tmp/%-manual.md
 	mkdir -p out
 	$(PANDOC) --number-sections --toc --standalone --epub-metadata=metadata.xml -o $@ $<
 
-# Docbook version
-tmp/libosmium-manual.xml: tmp/libosmium-manual.md
-	mkdir -p tmp
-	$(PANDOC) --standalone -t docbook -o $@ $<
-
 # Single HTML file
-out/libosmium-manual.html: tmp/libosmium-manual.md
+out/%-manual.html: tmp/%-manual.md
 	mkdir -p out
 	$(PANDOC) --template=templates/default --number-sections --standalone --toc --css=manual.css -o $@ $<
 
-# Chunked HTML via Docbook
-docbookhtml/index.html: tmp/libosmium-manual.xml
-	mkdir -p docbookhtml
-	xmlto xhtml -m custom-html-chunk.xsl $< -o docbookhtml/
+# Docbook version
+tmp/%-manual.xml: tmp/%-manual.md
+	mkdir -p tmp
+	$(PANDOC) --standalone -t docbook -o $@ $<
 
-docbookhtml/manual.css: docbookhtml.css
+# Chunked HTML via Docbook
+docbookhtml/%/index.html: tmp/%-manual.xml
+	mkdir -p docbookhtml/libosmium docbookhtml/opl-file-format docbookhtml/osmium-concepts
+	xmlto xhtml -m custom-html-chunk.xsl $< -o docbookhtml/$*
+
+docbookhtml/%/manual.css: docbookhtml.css
 	mkdir -p docbookhtml
 	cp $< $@
 
 # Multiple HTML files
 html/%.html: src/%.md
-	mkdir -p html
+	mkdir -p html/libosmium html/opl-file-format html/osmium-concepts
 	$(PANDOC) --template=templates/default --standalone --css=manual.css -o $@ $<
 
-html/manual.css: manual.css
-	mkdir -p html
+html/%/manual.css: manual.css
+	mkdir -p html/libosmium html/opl-file-format html/osmium-concepts
 	cp $< $@
 
 out/manual.css: manual.css
-	mkdir -p html
+	mkdir -p out
 	cp $< $@
 
 clean:
-	rm -f docbookhtml/* html/* out/* tmp/*
+	rm -fr docbookhtml/* html/* out/* tmp/*
 

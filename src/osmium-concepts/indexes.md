@@ -1,3 +1,4 @@
+
 # Indexes
 
 Osmium is built around the idea that a lot of the things you want to do with
@@ -99,5 +100,4 @@ persistent storage.
 
 
 #### List of multimap index classes
-
 

@@ -1,3 +1,4 @@
+
 # OSM Entities
 
 Osmium works with the four basic types of OSM entities: Nodes, Ways, and

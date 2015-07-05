@@ -1,5 +1,5 @@
 
-# Osmium Library Manual
+# Osmium Manuals
 
 This is the source code for the manual of the [Osmium
 Library](http://osmcode.org/libosmium/). It contains a more high level overview

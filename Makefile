@@ -20,6 +20,7 @@ LIBOSMIUM_MD_FILES := \
 
 OPL_MD_FILES := \
     src/opl-file-format/introduction.md \
+    src/opl-file-format/format.md \
     src/opl-file-format/encoding.md \
     src/opl-file-format/overview.md \
     src/opl-file-format/examples.md

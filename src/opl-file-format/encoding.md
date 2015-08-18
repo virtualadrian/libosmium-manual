@@ -1,10 +1,30 @@
 
 # Encoding
 
+## Numbers
+
+Numbers, such as IDs and version numbers are written as decimal digits.
+
+
+## Timestamps
+
+Timestamps are written in the same ISO 8601 format used in OSM XML files:
+`yyyy-mm-ddThh:mm:ssZ`. The time zone is always `Z`.
+
+
+## Deleted flag
+
+The 'Deleted flag' shows whether an object version has been deleted (`dD`) or
+is visible (`dV`). For normal OSM data files this is always `dV`, but change
+files and osm history files can contain deleted objects.
+
+
+## Text (user, tags, roles)
+
 User names, tags, and relation member roles can contain any valid Unicode
 character. Any characters that have special meaning in OPL files (' ' (space),
-'\n' (linefeed), ',' (comma), '=' (equals) and '@') have to be escaped as well
-as any non-printing characters.
+newline, ',' (comma), '=' (equals) and '@') have to be escaped as well as any
+non-printing characters.
 
 Escaped characters are written as `%xxxx%`, ie a percent sign followed by the
 hex code of the Unicode code point followed by another percent sign. The
@@ -19,4 +39,23 @@ _Currently there is a hard-coded list in the Osmium code of all the characters
 that don't need escaping. This list is incomplete and subject to change.
 Currently two hex digits are used for code points less than 256 and at least
 four hex digits for numbers above that._
+
+
+## Tags
+
+Tags are written in the form _key_`=`_value`_. Several tags are joined by a
+commas (`,`). Any equal sign or comma in the key or value is escaped.
+
+
+## Nodes in ways
+
+Nodes in ways are written as a comma-separated list of `n`_ID_ combinations.
+
+
+## Relation members
+
+Relation members consist of the type `n`, `w`, or `r`, the ID, an at-sign (`@`)
+and the role. Several members are joined by commas (`,`). Any at-sign or comma
+in the roles is escaped.
+
 

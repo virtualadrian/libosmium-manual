@@ -17,21 +17,30 @@ Osmium supports the following formats:
 
 **PBF**
 :   The binary format based on the Protobuf library. This is the most compact
-    format. More information on the [OSM Wiki](http://wiki.openstreetmap.org/wiki/PBF_Format).
+    format. More information on the
+    [OSM Wiki](http://wiki.openstreetmap.org/wiki/PBF_Format).
 
 **OPL**
 :   A simple format similar to CSV-files with one OSM entity per line. This
     format is intended for easy use with standard UNIX command line tools such
-    as `grep`, `cut`, and `awk`.
+    as `grep`, `cut`, and `awk`. See the [OPL File Format
+    Manual](http://docs.osmcode.org/opl-file-format-manual/) for details.
+
+**DEBUG**
+:   A nicely formatted text-based format that is easier to read for a human
+    than the XML or OPL formats. As the name implies this is intended for
+    debugging. The format can only be written by Osmium, not read.
 
 See [Output Formats] for more details about these formats.
 
+
 ## Compression
 
-Osmium supports compression and decompression of XML and OPL files internally
-using the GZIP and BZIP2 formats. If you want to use compression you have
-to include the right header files and link to the `libz` and `libbz2` libraries,
-respectively.
+Osmium supports compression and decompression of XML, OPL, and DEBUG files
+internally using the GZIP and BZIP2 formats. If you want to use compression you
+have to include the right header files and link to the `libz` and `libbz2`
+libraries, respectively.
+
 
 ## Headers
 
@@ -141,7 +150,7 @@ format parameter `pbf_add_metadata=false`.
 
 ### OPL ("Object Per Line") Format
 
-See the OPL File Format Manual.
+See the [OPL File Format Manual](http://docs.osmcode.org/opl-file-format-manual/).
 
 
 ## Reading and Writing OSM Files with Osmium
@@ -189,9 +198,9 @@ Format  Option             Default  Description
 ------- -------            -------- ------------
 PBF     pbf_dense_nodes    true     Use DenseNodes (more space efficient)
 PBF     pbf_compression    gzip     Compress blocks using gzip (use "none" to disable)
-PBF     pbf_add_metadata   true     Add metadata (version, timestamp, etc. to objects)
 XML     xml_change_format  false    Set change format, can also be set by using `osc` instead of `osm` suffix
 XML     force_visible_flag false    Write out `visible` flag on each object, also set if `osh` instead of `osm` suffix used
+all     add_metadata       true     Add metadata (version, timestamp, etc. to objects)
 
 It is also possible to change the format after creating a File object using the accessor functions:
 
@@ -274,6 +283,6 @@ chapter for more convenient methods of working with open files.
 
 Format  Option           Default        Description
 ------- -------          --------       ------------
-all     generator        Osmium/VERSION
+all     generator        Osmium/VERSION The program that generated this file
 XML     xml_josm_upload  not set        Set `upload` attribute in header to given value (`true` or `false`) for use in JOSM
 

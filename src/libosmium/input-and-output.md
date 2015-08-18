@@ -1,45 +1,6 @@
 # Input and Output
 
-Most programs using OSM data will need to read from OSM files and/or write to
-OSM files. Osmium supports several different OSM file formats and has many
-different ways of accessing the data in convenient ways.
-
-## File Formats
-
-Osmium supports the following formats:
-
-**XML**
-:   The original XML-based OSM format. This format is rather verbose and
-    working with it is slow, but it is still used often and in some
-    cases there is no alternative. The main OSM database API also returns
-    its data in this format. More information about this format on the
-    [OSM Wiki](http://wiki.openstreetmap.org/wiki/OSM_XML).
-
-**PBF**
-:   The binary format based on the Protobuf library. This is the most compact
-    format. More information on the
-    [OSM Wiki](http://wiki.openstreetmap.org/wiki/PBF_Format).
-
-**OPL**
-:   A simple format similar to CSV-files with one OSM entity per line. This
-    format is intended for easy use with standard UNIX command line tools such
-    as `grep`, `cut`, and `awk`. See the [OPL File Format
-    Manual](http://docs.osmcode.org/opl-file-format-manual/) for details.
-
-**DEBUG**
-:   A nicely formatted text-based format that is easier to read for a human
-    than the XML or OPL formats. As the name implies this is intended for
-    debugging. The format can only be written by Osmium, not read.
-
-See [Output Formats] for more details about these formats.
-
-
-## Compression
-
-Osmium supports compression and decompression of XML, OPL, and DEBUG files
-internally using the GZIP and BZIP2 formats. If you want to use compression you
-have to include the right header files and link to the `libz` and `libbz2`
-libraries, respectively.
+Libosmium can read several different OSM file formats.
 
 
 ## Headers
@@ -66,8 +27,9 @@ following headers:
     #include <osmium/io/pbf_input.hpp>
     #include <osmium/io/xml_input.hpp>
 
-    #include <osmium/io/pbf_output.hpp>
+    #include <osmium/io/debug_output.hpp>
     #include <osmium/io/opl_output.hpp>
+    #include <osmium/io/pbf_output.hpp>
     #include <osmium/io/xml_output.hpp>
 
 If you want compression support, you have to add the includes for the different
@@ -80,22 +42,15 @@ Or, if you want both anyway, you can just use the shortcut:
 
     #include <osmium/io/any_compression.hpp>
 
-## Output Formats
+
+## Compression
+
+If you want to use compression you have to include the right header files and
+link to the `libz` and `libbz2` libraries, respectively.
+
+## File Formats
 
 ### XML
-
-There are several different XML formats in use in the OSM project. The main
-formats are the one used for planet files, extracts, and API responses (suffix
-`.osm`), the format used for change files (suffix `.osc`) and the history
-format (suffixes `.osm` or `.osh`).
-
-Some variants are also used, such as the JOSM format which is similiar to the
-normal OSM format but has some additions. Support for the features of these
-formats varies.
-
-When reading, the OSM change format (`.osc`) is detected automatically. When
-writing, you have to set it using the format specifier `osc` or the format
-parameter `xml_change_format=true`.
 
 For read support you need the expat parser library. Link with:
 
@@ -105,52 +60,14 @@ For write support no special library is needed.
 
 ### PBF
 
-The [PBF](http://wiki.openstreetmap.org/wiki/PBF_Format) file format is based
-on the [Google Protocol Buffers library](http://code.google.com/p/protobuf/).
-PBF files are very space efficient and faster to use than XML files. PBF files
-can contain normal OSM data or OSM history data, but there is no equivalent to
-the XML .osc format.
+To build with PBF support you have to compile with threads and need `libz`:
 
-The OSM PBF format is defined in [libosmpbf](https://github.com/scrosby/OSM-binary),
-you'll probably have to compile and install this yourself before using it in
-Osmium.
+    -pthread -lz
 
-To build with PBF support, several libraries are needed: libprotobuf-lite contains
-the Protocol Buffers library itself which also needs libpthreads, for compression libz
-is needed. Those are all standard libraries that should be available on most systems.
-
-To summarize, you need to link with:
-
-    -pthread -lprotobuf-lite -losmpbf -lz
-
-The Google Protocol Buffers library allocates some global buffer memory
-which is never freed. You can call the following function in your
-code to free these buffers:
-
-    google::protobuf::ShutdownProtobufLibrary();
-
-You do not have to do this, the function is not necessary for the
-correct functioning of your program. But if you are using a memory
-checker like Valgrind you will get error messages otherwise.
-
-Osmium supports reading and writing of nodes in *DenseNodes* and non-*DenseNodes*
-formats. Default is *DenseNodes*, as this is much more space-efficient. Add the
-format parameter `pbf_dense_nodes=false` to disable *DenseNodes*.
-
-Osmium usually will compress PBF blocks using zlib. To disable this, use the
-format parameter `pbf_compression=none`.
-
-PBF files contain a string table in each data block. By default these string
-tables are sorted. Use `pbf_sort_stringtables=false` to not sort them. This
-will slightly speed up the writing of PBF files.
-
-Usually PBF files contain all the metadata for objects such as changeset id,
-username, etc. To save some space you can disable writing of metatdata with the
-format parameter `pbf_add_metadata=false`.
-
-### OPL ("Object Per Line") Format
-
-See the [OPL File Format Manual](http://docs.osmcode.org/opl-file-format-manual/).
+Note that in older versions of `libosmium` you needed to link with the
+`protobuf` and `osmpbf` libraries. They are not used any more. Instead the
+[protozero](https://github.com/mapbox/protozero) header-only library is used.
+This library is included in the libosmium repository.
 
 
 ## Reading and Writing OSM Files with Osmium
@@ -192,15 +109,6 @@ The format string can also take optional arguments separated by commas.
 osmium::io::File output_file("out.osm.pbf", "pbf,pbf_dense_nodes=false");
 ~~~
 
-Here is a list of optional arguments:
-
-Format  Option             Default  Description
-------- -------            -------- ------------
-PBF     pbf_dense_nodes    true     Use DenseNodes (more space efficient)
-PBF     pbf_compression    gzip     Compress blocks using gzip (use "none" to disable)
-XML     xml_change_format  false    Set change format, can also be set by using `osc` instead of `osm` suffix
-XML     force_visible_flag false    Write out `visible` flag on each object, also set if `osh` instead of `osm` suffix used
-all     add_metadata       true     Add metadata (version, timestamp, etc. to objects)
 
 It is also possible to change the format after creating a File object using the accessor functions:
 

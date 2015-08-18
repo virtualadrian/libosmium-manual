@@ -1,5 +1,5 @@
 
-## File format
+# File format
 
 Each line of the file contains one OSM object (a node, way, or relation) or an
 OSM changeset. Lines end in a newline character.
@@ -61,5 +61,5 @@ For changesets the fields are:
 
 The field `e` is empty when the changeset is not closed yet. The fields `x`,
 `y`, `X`, `Y` can be empty when no bounding box could be derived. The field `k`
-can be 0. The field `T` can be empty if there are not tags.
+can be 0. The field `T` can be empty if there are no tags.
 

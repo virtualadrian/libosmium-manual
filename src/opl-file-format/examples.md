@@ -30,7 +30,8 @@ Find all objects with changeset ID 123:
 
 Count how many objects were created in each hour of the day:
 
-    egrep ' v1 ' data.osm.opl | cut -d' ' -f5 | cut -dT -f2 | cut -d: -f1 | sort | uniq -c
+    egrep ' v1 ' data.osm.opl | cut -d' ' -f5 | cut -dT -f2 | \
+        cut -d: -f1 | sort | uniq -c
 
 Find all closed ways:
 
@@ -42,7 +43,8 @@ Find all ways tagged with `area=yes` that are not closed:
 
 Find all users who have created post boxes:
 
-    egrep ' v1 ' data.osm.opl | egrep 'amenity=post_box' | cut -d' ' -f7 | cut -c2- | sort -u
+    egrep ' v1 ' data.osm.opl | egrep 'amenity=post_box' | \
+        cut -d' ' -f7 | cut -c2- | sort -u
 
 Find all node IDs used in `via` roles in relations:
 
@@ -51,11 +53,13 @@ Find all node IDs used in `via` roles in relations:
 
 Find all nodes having any tags igoring `created_by` tags:
 
-    egrep '^n' data.osm.opl | egrep -v ' T$' | sed -e 's/\( T\|,\)created_by=[^,]\+\(,\|$\)/\1/' | egrep -v ' T$'
+    egrep '^n' data.osm.opl | egrep -v ' T$' | \
+        sed -e 's/\( T\|,\)created_by=[^,]\+\(,\|$\)/\1/' | egrep -v ' T$'
 
 Count tag key usage:
 
-    sed -e 's/^.* T//' data.osm.opl | egrep -v '^$' | sed -e 's/,/\n/g' | cut -d= -f1 | sort | uniq -c | sort -nr
+    sed -e 's/^.* T//' data.osm.opl | egrep -v '^$' | sed -e 's/,/\n/g' | \
+        cut -d= -f1 | sort | uniq -c | sort -nr
 
 Order by object type, object id and version (ie the usual order for OSM files):
 

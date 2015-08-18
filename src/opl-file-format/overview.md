@@ -1,8 +1,8 @@
 
 # Format Overview
 
-(Some lines have been broken in this description for easier reading, in the
-file format they are not.)
+_Some lines have been broken in this description for easier reading, in the
+file format they are not._
 
     NODE:
         n(OBJECT_ID) v(VERSION) d(V|D) c(CHANGESET_ID) t(yyyy-mm-ddThh:mm:ssZ)

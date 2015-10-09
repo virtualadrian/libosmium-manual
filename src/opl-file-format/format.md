@@ -51,6 +51,7 @@ For changesets the fields are:
     k - num_changes
     s - created_at (start) timestamp (ISO Format)
     e - closed_at (end) timestamp (ISO Format)
+    d - number of comments in the discussion
     i - User ID
     u - Username
     x - Longitude (left bottom corner, min_lon)
@@ -62,4 +63,6 @@ For changesets the fields are:
 The field `e` is empty when the changeset is not closed yet. The fields `x`,
 `y`, `X`, `Y` can be empty when no bounding box could be derived. The field `k`
 can be 0. The field `T` can be empty if there are no tags.
+
+Changeset discussions do not appear in the OPL format!
 

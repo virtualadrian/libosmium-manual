@@ -18,7 +18,8 @@ file format they are not._
 
     CHANGESET:
         c(CHANGESET_ID) k(NUM_CHANGES) s(yyyy-mm-ddThh:mm:ssZ) e(yyyy-mm-ddThh:mm:ssZ)
-        i(USER_ID) u(USERNAME) x(LONGITUDE) y(LATITUDE) X(LONGITUDE) Y(LATITUDE) T(TAGS)
+        d(NUM_COMMENTS) i(USER_ID) u(USERNAME)
+        x(LONGITUDE) y(LATITUDE) X(LONGITUDE) Y(LATITUDE) T(TAGS)
 
     TAGS
         (KEY)=(VALUE),...

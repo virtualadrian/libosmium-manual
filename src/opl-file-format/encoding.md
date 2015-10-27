@@ -11,6 +11,8 @@ Numbers, such as IDs and version numbers are written as decimal digits.
 Timestamps are written in the same ISO 8601 format used in OSM XML files:
 `yyyy-mm-ddThh:mm:ssZ`. The time zone is always `Z`.
 
+If the timestamp is not set, it will show up empty.
+
 
 ## Deleted flag
 

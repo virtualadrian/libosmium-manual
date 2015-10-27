@@ -38,7 +38,7 @@ Then in the given order:
 If the file was written without metadata (using the option `add_metadata=false`
 in Osmium), the fields `v`, `d`, `c`, `t`, `i`, and `u` are missing.
 
-The N, M, and T fields can be empty. If the user is anonymous, the 'User ID'
+The t, N, M, and T fields can be empty. If the user is anonymous, the 'User ID'
 will be 0 and the 'Username' field will be empty: `... i0 u ...`. If the
 node is deleted, the 'Longitude' and 'Latitude' fields are empty. All other
 fields always contain data.

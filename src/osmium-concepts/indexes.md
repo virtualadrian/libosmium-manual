@@ -44,7 +44,7 @@ indexed by the ID. For sparse indexes there are several other possibilities.
 The first component of the index type is either `dense` or `sparse` to show
 for which data it is suitable.
 
-The second question is whether you have enought RAM to hold all the data in the
+The second question is whether you have enough RAM to hold all the data in the
 index. Of course it is more efficient to keep the index in RAM, but if you
 don't have enough, you need to use a disk-based index. The second component of
 the index type is either `mem` for in-memory storage or `file` for storage on

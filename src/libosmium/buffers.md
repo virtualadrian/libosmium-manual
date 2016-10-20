@@ -62,6 +62,72 @@ osmium::memory::Buffer buffer(buffer_size, osmium::memory::Buffer::auto_grow::no
 
 ## Adding Items to the Buffer
 
+You cannot create OSM objects on the stack because they are stored in buffers,
+so you have to build them using a Builder.
+
+~~~{.cpp}
+void add_tags(osmium::memory::Buffer& buf, osmium::builder::Builder* builder) {
+    osmium::builder::TagListBuilder tl_builder(buf, builder);
+    tl_builder.add_tag("amenity", "restaurant");
+}
+
+const int buffer_size = 10240;
+{
+    osmium::memory::Buffer node_buffer(buffer_size, osmium::memory::Buffer::auto_grow::yes);
+    osmium::builder::NodeBuilder builder(node_buffer);
+    static_cast<osmium::Node&>(builder.object()).set_id(1);
+    builder.add_user("foo");
+    osmium::Node& obj = builder.object();
+    obj.set_version("1");
+    obj.set_changeset("5");
+    obj.set_uid("140");
+    obj.set_attribute("timestamp", "2016-01-05T01:22:45Z");
+    obj.set_location(osmium::Location(9.0, 49.0));
+    add_tags(node_buffer, &builder);
+    node_buffer.commit();
+}
+// do something with the buffer (e.g. write to file)
+~~~
+
+Building OSM entities and adding them to a buffer has some pitfalls. A buffer has to be
+aligned (padding with zeros) before committing. If you try to commit a buffer which is
+not aligned, you program will fail with ```Assertion `buffer.is_aligned()` failed```.
+
+The addition of the attributes `version`, `changeset`, `uid` and `timestamp` may be
+omitted but you have to add the attribute `user` in order to have an aligned buffer.
+
+If the object has references to other OSM objects (tags of an OSM object, node
+references of a way, members of a relation), you need additional builders for
+these reference lists. The destructor of one of these builders has to be called
+before another builder writes data to the buffer.
+
+~~~{.cpp}
+void build_way(osmium::memory::Buffer& buf) {
+    osmium::builder::WayBuilder way_builder(buf);
+    static_cast<osmium::Way&>(way_builder.object()).set_id(1);
+    // set attributes version, changeset, uid and timestamp (all optional)
+    way_builder.add_user("foo");
+    {
+        osmium::builder::WayNodeListBuilder wnl_builder(buf, &way_builder);
+        wnl_builder.add_node_ref(osmium::NodeRef (1, osmium::Location()));
+        wnl_builder.add_node_ref(osmium::NodeRef (2, osmium::Location()));
+    }
+    add_tags(buf, way_builder);
+}
+
+const int buffer_size = 10240;
+osmium::memory::Buffer way_buffer(buffer_size, osmium::memory::Buffer::auto_grow::yes);
+build_way(way_buffer);
+way_buffer.commit();
+~~~
+
+This will create only a way, the nodes have to be created separately.
+
+Building relations works similar to building ways. You use a
+`osmium::builder::RelationBuilder` instead of a `WayNodeListBuilder`. The
+instance of `RelationBuilder` has to go out of scope before the
+`TagListBuilder` writes the tags to the buffer and vice versa.
+
 ## Handling a Full Buffer
 
 If a buffer becomes full, there are three different things that can happen:

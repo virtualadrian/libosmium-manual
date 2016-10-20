@@ -194,3 +194,32 @@ Format  Option           Default        Description
 all     generator        Osmium/VERSION The program that generated this file
 XML     xml_josm_upload  not set        Set `upload` attribute in header to given value (`true` or `false`) for use in JOSM
 
+
+### Writing a File
+
+You can write a file by moving a buffer which contains the objects to be written.
+
+~~~{.cpp}
+osmium::memory::Buffer buffer;
+// Add objects to the buffer (see above) or read it from an input file using osmium::io::Reader::read().
+osmium::io::File output_file("output.osm.pbf");
+osmium::io::Writer writer(output_file);
+writer.write(std::move(buffer));
+writer.close();
+~~~
+
+As a shortcut, you can directly give the filename to the Writer if you are relying on the automatic file format detection
+(the same as for Readers) and don't need any special handling.
+
+~~~{.cpp}
+osmium::io::Writer writer("output.osm.pbf")
+~~~
+
+You can give additional arguments to the constructor of Writer class, e.g. regarding overwriting or a customized header.
+
+~~~{.cpp}
+osmium::io::Header header;
+header.set("generator", "FastOSMTool");
+osmium::io::Writer writer("output.osm.pbf", header, osmium::io::overwrite::allow, osmium::io::fsync::yes);
+~~~
+

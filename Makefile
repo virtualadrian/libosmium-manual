@@ -67,7 +67,8 @@ tmp/opl-file-format-manual.md: src/opl-file-format/header.md $(OPL_MD_FILES)
 
 tmp/osmium-concepts-manual.md: src/osmium-concepts/header.md $(CONCEPTS_MD_FILES)
 	mkdir -p tmp
-	cat $^ >$@
+	cp src/osmium-concepts/*.png tmp/
+	sed -e 's/(\(.*\)\.png)/(tmp\/\1.png)/' $^ >$@
 
 # PDF version
 out/%-manual.pdf: tmp/%-manual.md

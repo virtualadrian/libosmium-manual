@@ -16,6 +16,7 @@ LIBOSMIUM_MD_FILES := \
     src/libosmium/geom.md \
     src/libosmium/storage.md \
     src/libosmium/exceptions.md \
+    src/libosmium/invalid_data.md \
     src/libosmium/config.md
 
 OPL_MD_FILES := \

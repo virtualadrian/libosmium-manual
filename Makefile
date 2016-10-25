@@ -27,9 +27,10 @@ OPL_MD_FILES := \
 
 CONCEPTS_MD_FILES := \
     src/osmium-concepts/introduction.md \
-    src/osmium-concepts/files.md \
-    src/osmium-concepts/handlers.md \
     src/osmium-concepts/entities.md \
+    src/osmium-concepts/files.md \
+    src/osmium-concepts/buffers.md \
+    src/osmium-concepts/handlers.md \
     src/osmium-concepts/indexes.md
 
 HTML_FILES := $(patsubst src/%.md,html/%.html,$(CONCEPTS_MD_FILES) $(LIBOSMIUM_MD_FILES) $(OPL_MD_FILES))

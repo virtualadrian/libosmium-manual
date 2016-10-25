@@ -62,36 +62,36 @@ osmium::memory::Buffer buffer(buffer_size, osmium::memory::Buffer::auto_grow::no
 
 ## Adding Items to the Buffer
 
-You cannot create OSM objects on the stack because they are stored in buffers,
-so you have to build them using a Builder.
+You cannot create OSM objects on the stack, they always have to be stored in
+buffers. To create OSM objects special "builder" classes are used:
 
 ~~~{.cpp}
-void add_tags(osmium::memory::Buffer& buf, osmium::builder::Builder* builder) {
-    osmium::builder::TagListBuilder tl_builder(buf, builder);
+void add_tags(osmium::memory::Buffer& buffer, osmium::builder::Builder* builder) {
+    osmium::builder::TagListBuilder tl_builder{buffer, builder};
     tl_builder.add_tag("amenity", "restaurant");
 }
 
 const int buffer_size = 10240;
+osmium::memory::Buffer node_buffer{buffer_size, osmium::memory::Buffer::auto_grow::yes};
 {
-    osmium::memory::Buffer node_buffer(buffer_size, osmium::memory::Buffer::auto_grow::yes);
-    osmium::builder::NodeBuilder builder(node_buffer);
-    static_cast<osmium::Node&>(builder.object()).set_id(1);
+    osmium::builder::NodeBuilder builder{node_buffer};
     builder.add_user("foo");
     osmium::Node& obj = builder.object();
-    obj.set_version("1");
-    obj.set_changeset("5");
-    obj.set_uid("140");
-    obj.set_attribute("timestamp", "2016-01-05T01:22:45Z");
-    obj.set_location(osmium::Location(9.0, 49.0));
+    obj.set_id(1);
+    obj.set_version(1);
+    obj.set_changeset(5);
+    obj.set_uid(140);
+    obj.set_timestamp("2016-01-05T01:22:45Z");
+    obj.set_location(osmium::Location{9.0, 49.0});
     add_tags(node_buffer, &builder);
-    node_buffer.commit();
 }
+node_buffer.commit();
 // do something with the buffer (e.g. write to file)
 ~~~
 
 Building OSM entities and adding them to a buffer has some pitfalls. A buffer has to be
 aligned (padding with zeros) before committing. If you try to commit a buffer which is
-not aligned, you program will fail with ```Assertion `buffer.is_aligned()` failed```.
+not aligned, you program will fail with `Assertion 'buffer.is_aligned()' failed`.
 
 The addition of the attributes `version`, `changeset`, `uid` and `timestamp` may be
 omitted but you have to add the attribute `user` in order to have an aligned buffer.
@@ -102,17 +102,17 @@ these reference lists. The destructor of one of these builders has to be called
 before another builder writes data to the buffer.
 
 ~~~{.cpp}
-void build_way(osmium::memory::Buffer& buf) {
-    osmium::builder::WayBuilder way_builder(buf);
-    static_cast<osmium::Way&>(way_builder.object()).set_id(1);
+void build_way(osmium::memory::Buffer& buffer) {
+    osmium::builder::WayBuilder way_builder{buffer};
+    way_builder.object().set_id(1);
     // set attributes version, changeset, uid and timestamp (all optional)
     way_builder.add_user("foo");
     {
-        osmium::builder::WayNodeListBuilder wnl_builder(buf, &way_builder);
+        osmium::builder::WayNodeListBuilder wnl_builder{buffer, &way_builder};
         wnl_builder.add_node_ref(osmium::NodeRef (1, osmium::Location()));
         wnl_builder.add_node_ref(osmium::NodeRef (2, osmium::Location()));
     }
-    add_tags(buf, way_builder);
+    add_tags(buffer, way_builder);
 }
 
 const int buffer_size = 10240;

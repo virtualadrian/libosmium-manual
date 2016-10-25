@@ -197,29 +197,32 @@ XML     xml_josm_upload  not set        Set `upload` attribute in header to give
 
 ### Writing a File
 
-You can write a file by moving a buffer which contains the objects to be written.
+To create an OSM file, create an instance of the `osmium::io::Writer` class
+and move buffers with OSM objects into its `write()` function:
 
 ~~~{.cpp}
 osmium::memory::Buffer buffer;
 // Add objects to the buffer (see above) or read it from an input file using osmium::io::Reader::read().
-osmium::io::File output_file("output.osm.pbf");
-osmium::io::Writer writer(output_file);
+osmium::io::File output_file{"output.osm.pbf"};
+osmium::io::Writer writer{output_file};
 writer.write(std::move(buffer));
 writer.close();
 ~~~
 
-As a shortcut, you can directly give the filename to the Writer if you are relying on the automatic file format detection
-(the same as for Readers) and don't need any special handling.
+As a shortcut, you can directly give the filename to the Writer if you are
+relying on the automatic file format detection (the same as for Readers) and
+don't need any special handling.
 
 ~~~{.cpp}
-osmium::io::Writer writer("output.osm.pbf")
+osmium::io::Writer writer{"output.osm.pbf"};
 ~~~
 
-You can give additional arguments to the constructor of Writer class, e.g. regarding overwriting or a customized header.
+You can give additional arguments to the constructor of the Writer class, for
+instance a customized header or to allow writing over an existing file:
 
 ~~~{.cpp}
 osmium::io::Header header;
 header.set("generator", "FastOSMTool");
-osmium::io::Writer writer("output.osm.pbf", header, osmium::io::overwrite::allow, osmium::io::fsync::yes);
+osmium::io::Writer writer{"output.osm.pbf", header, osmium::io::overwrite::allow, osmium::io::fsync::yes};
 ~~~
 

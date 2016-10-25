@@ -18,7 +18,6 @@ all roads in an OSM file.
 #include <osmium/osm/node.hpp>
 #include <osmium/osm/way.hpp>
 #include <osmium/io/any_input.hpp>
-#include <osmium/io/reader.hpp>
 #include <osmium/visitor.hpp>
 
 class MyHandler : public osmium::handler::Handler {
@@ -36,7 +35,7 @@ public:
 };
 
 int main(int, char**) {
-    osmium::io::Reader reader ("input.osm.pbf", osmium::osm_entity_bits::node | osmium::osm_entity_bits::way);
+    osmium::io::Reader reader{"input.osm.pbf", osmium::osm_entity_bits::node | osmium::osm_entity_bits::way};
     MyHandler handler;
     osmium::apply(reader, handler);
     reader.close();
@@ -57,21 +56,20 @@ operating system. See [Osmium Concept Manual](../osmium-concepts-manual/#indexes
 
 ~~~{.cpp}
 #include <iostream>
+
 #include <osmium/handler.hpp>
 #include <osmium/osm/node.hpp>
 #include <osmium/osm/way.hpp>
 #include <osmium/io/any_input.hpp>
-#include <osmium/io/reader.hpp>
 #include <osmium/visitor.hpp>
 #include <osmium/index/map/sparse_mem_array.hpp>
 #include <osmium/handler/node_locations_for_ways.hpp>
-
 
 class MyHandler : public osmium::handler::Handler {
 public:
     void way(const osmium::Way& way) {
         std::cout << "way " << way.id() << '\n';
-        for (auto n : way.nodes()) {
+        for (const auto& n : way.nodes()) {
             std::cout << n.ref() << ": " << n.lon() << ", " << n.lat() << '\n';
         }
     }
@@ -80,9 +78,9 @@ public:
 int main(int, char**) {
     typedef osmium::index::map::SparseMemArray<osmium::unsigned_object_id_type, osmium::Location> index_type;
     typedef osmium::handler::NodeLocationsForWays<index_type> location_handler_type;
-    osmium::io::Reader reader ("input.osm.pbf", osmium::osm_entity_bits::node | osmium::osm_entity_bits::way);
+    osmium::io::Reader reader{"input.osm.pbf", osmium::osm_entity_bits::node | osmium::osm_entity_bits::way};
     index_type index;
-    location_handler_type location_handler(index);
+    location_handler_type location_handler{index};
     MyHandler handler;
     osmium::apply(reader, location_handler, handler);
     reader.close();

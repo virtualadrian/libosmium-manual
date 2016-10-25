@@ -183,7 +183,7 @@ reader.close();
 ~~~
 
 In most cases you do not want to work with the buffers, but with the OSM
-entities within them. See the [Iterators] chapter and the [Visitors and Handlers]
+entities within them. See the [Iterators] chapter and the [Handlers]
 chapter for more convenient methods of working with open files.
 
 

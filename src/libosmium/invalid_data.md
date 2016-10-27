@@ -98,9 +98,11 @@ Historically the OSM database sometimes contained non-UTF-8 strings. This
 should have all been fixed by now.
 
 These parts of the library don't care about string encoding:
+
 * PBF input and output
 
 These parts of the library *do* care about string encoding:
+
 * OPL and debug output expect UTF-8 encoded data and escape non-printable
   characters accordingly
 

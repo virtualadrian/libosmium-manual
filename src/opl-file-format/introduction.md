@@ -14,5 +14,5 @@ as some specialized tool.
 OPL files are only about half the size of OSM XML files, when compressed (with
 gzip or bzip2) they are about the same size.
 
-Osmium currently can write OPL files, but not read them.
+Osmium can read and write OPL files.
 

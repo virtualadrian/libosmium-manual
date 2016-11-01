@@ -13,6 +13,7 @@ LIBOSMIUM_MD_FILES := \
     src/libosmium/input-and-output.md \
     src/libosmium/iterators.md \
     src/libosmium/visitors-and-handlers.md \
+    src/libosmium/collectors.md \
     src/libosmium/geom.md \
     src/libosmium/storage.md \
     src/libosmium/exceptions.md \

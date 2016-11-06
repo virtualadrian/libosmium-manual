@@ -25,8 +25,8 @@ files and osm history files can contain deleted objects.
 
 User names, tags, and relation member roles can contain any valid Unicode
 character. Any characters that have special meaning in OPL files (space,
-newline, ',' (comma), '=' (equals) and '@') have to be escaped as well as any
-non-printing characters.
+newline, ',' (comma), '=' (equals), '@', and '%') have to be escaped as well as
+any non-printing characters.
 
 Escaped characters are written as `%xxxx%`, ie a percent sign followed by the
 hex code of the Unicode code point followed by another percent sign. The

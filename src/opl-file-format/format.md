@@ -4,14 +4,16 @@
 Each line of the file contains one OSM object (a node, way, or relation) or an
 OSM changeset. Lines end in a newline character.
 
-Each line is made up of several fields separated by a space character. Fields
-always appear in the same order in a line.
-
-Fields are all always present (except when the file is written without
-metadata, see below).
-
+Each line is made up of several fields separated by a space character.
 Each field is introduced by a specific character defining the type of the
 field.
+
+When OPL files are written by Osmium, the fields always appear in the same
+order in a line and are always all present (except when the file is written
+without metadata, see below).
+
+When Osmium parses a line, fields can appear in any order and all fields except
+the first one are optional.
 
 ## Fields in OSM data files
 

@@ -44,7 +44,7 @@ void MyRelCollector::complete_relation(osmium::relations::RelationMeta& relation
             std::cout << "member node " << member.ref() << " with role " << member.role() << '\n';
             const osmium::Node& node = static_cast<const osmium::Node&>
                 (this->get_member(this->get_offset(member.type(), member.ref())));
-            std::cout << "at " << node.lon() << " " << node.lat() << '\n';
+            std::cout << "at " << node.location().lon() << " " << node.location().lat() << '\n';
             break;
         case osmium::item_type::way :
             std::cout << "member way " << member.ref() << " with role " << member.role() << '\n';

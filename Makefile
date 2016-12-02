@@ -20,14 +20,7 @@ LIBOSMIUM_MD_FILES := \
     src/libosmium/invalid_data.md \
     src/libosmium/config.md
 
-OPL_MD_FILES := \
-    src/opl-file-format/introduction.md \
-    src/opl-file-format/format.md \
-    src/opl-file-format/encoding.md \
-    src/opl-file-format/overview.md \
-    src/opl-file-format/examples.md
-
-HTML_FILES := $(patsubst src/%.md,html/%.html,$(LIBOSMIUM_MD_FILES) $(OPL_MD_FILES))
+HTML_FILES := $(patsubst src/%.md,html/%.html,$(LIBOSMIUM_MD_FILES))
 
 all: html singlehtml
 
@@ -35,26 +28,22 @@ all: html singlehtml
 
 .PHONY: docbook docbookhtml epub html singlehtml pdf
 
-docbook: tmp/libosmium-manual.xml tmp/opl-file-format-manual.xml
+docbook: tmp/libosmium-manual.xml
 
-docbookhtml: docbookhtml/libosmium/index.html docbookhtml/opl-file-format/index.html docbookhtml/libosmium/manual.css docbookhtml/opl-file-format/manual.css
+docbookhtml: docbookhtml/libosmium/index.html docbookhtml/libosmium/manual.css
 
-html: $(HTML_FILES) html/libosmium/manual.css html/opl-file-format/manual.css
+html: $(HTML_FILES) html/libosmium/manual.css
 
-epub: out/libosmium-manual.epub out/opl-file-format-manual.epub
+epub: out/libosmium-manual.epub
 
-singlehtml: out/libosmium-manual.html out/opl-file-format-manual.html out/manual.css
+singlehtml: out/libosmium-manual.html out/manual.css
 
-pdf: out/libosmium-manual.pdf out/opl-file-format-manual.pdf
+pdf: out/libosmium-manual.pdf
 
 # -----------------------------------------------------
 
 # Concatenation of all markdown files
 tmp/libosmium-manual.md: src/libosmium/header.md $(LIBOSMIUM_MD_FILES)
-	mkdir -p tmp
-	cat $^ >$@
-
-tmp/opl-file-format-manual.md: src/opl-file-format/header.md $(OPL_MD_FILES)
 	mkdir -p tmp
 	cat $^ >$@
 
@@ -80,7 +69,7 @@ tmp/%-manual.xml: tmp/%-manual.md
 
 # Chunked HTML via Docbook
 docbookhtml/%/index.html: tmp/%-manual.xml
-	mkdir -p docbookhtml/libosmium docbookhtml/opl-file-format
+	mkdir -p docbookhtml/libosmium
 	xmlto xhtml -m custom-html-chunk.xsl $< -o docbookhtml/$*
 
 docbookhtml/%/manual.css: docbookhtml.css
@@ -89,11 +78,11 @@ docbookhtml/%/manual.css: docbookhtml.css
 
 # Multiple HTML files
 html/%.html: src/%.md
-	mkdir -p html/libosmium html/opl-file-format
+	mkdir -p html/libosmium
 	$(PANDOC) --template=templates/default --standalone --css=manual.css -o $@ $<
 
 html/%/manual.css: manual.css
-	mkdir -p html/libosmium html/opl-file-format
+	mkdir -p html/libosmium
 	cp $< $@
 
 out/manual.css: manual.css
